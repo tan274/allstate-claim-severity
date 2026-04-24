@@ -1,0 +1,13 @@
+{
+  "models": {
+    "LightGBM": {
+      "MAE": 1151.92,
+      "RMSE": 1934.37
+    },
+    "XGBoost": {
+      "MAE": 1155.49,
+      "RMSE": 1936.01
+    }
+  },
+  "winner": "LightGBM"
+}

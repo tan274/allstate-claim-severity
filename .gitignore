@@ -1,0 +1,33 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.so
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data — raw CSV files are large; keep processed parquet files
+data/raw/
+data/processed/*.parquet
+
+# Artifacts — regenerate via train.py
+artifacts/model.joblib
+artifacts/preprocessor.joblib
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Planning docs
+BUILD_PLAN_V2.md
+PROGRESS.md
+
+# Codex
+.codex
