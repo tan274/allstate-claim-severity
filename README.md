@@ -105,7 +105,7 @@ Accepts a partial JSON payload — missing features are filled with training def
 
 ## Modeling approach
 
-- **Target transform**: trained on `log1p(loss)`, predictions inverted with `expm1` — reduces the effect of large outliers
+- **Target transform**: trained on `log1p(loss)`, predictions inverted with `expm1` — because claim amounts are heavily right-skewed, this makes the regression problem more stable
 - **Categorical encoding**: frequency encoding (each category replaced by its count in training data); unknown categories map to 0
 - **Numeric nulls**: filled with training medians
 - **Train/val split**: 80/20, `random_state=42`
@@ -145,9 +145,11 @@ SHAP values explain each prediction in **log-loss space** (not raw dollars). Top
 | cat2 | 0.060 |
 | cat1 | 0.054 |
 
-Since features are anonymized and frequency-encoded, interpretation is directional only — the direction of each feature's effect varies and is best read from the summary plot rather than assumed. What these features represent in the real world is unknown.
+Feature importance is heavily concentrated: the top 10 features account for ~50% of total mean absolute SHAP, while 99 of 130 features have near-zero impact. `cat80` alone accounts for ~15% of total importance, suggesting a single anonymized categorical variable is the strongest driver of claim cost predictions.
 
-See `artifacts/shap_summary.png` for the full summary plot.
+Since all features are anonymized and frequency-encoded, directional interpretation isn't possible — we can say which features matter most, but not what they represent in the real world. See `artifacts/shap_summary.png` for the full summary plot.
+
+The residuals plot (`artifacts/residuals.png`) shows the model systematically underpredicts large claims — mean residual is +$226 for claims under $10k but +$5,852 for claims over $10k. This is a known limitation of log-transform regression on heavy-tailed targets.
 
 ---
 
